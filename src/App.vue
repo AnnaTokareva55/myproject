@@ -2,18 +2,22 @@
   <div id="app">
     <Header />
     <md-content>
-      <h1 class="md-title">Добро пожаловать!</h1>
+      <router-view />
     </md-content>
   </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
+import Home from "./components/Home.vue";
+import Article from "./components/Article.vue";
 
 export default {
   name: "App",
   components: {
-    Header
+    Header,
+    Home,
+    Article
   }
 };
 </script>
