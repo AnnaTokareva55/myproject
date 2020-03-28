@@ -31,6 +31,10 @@ export default {
   justify-content: space-between;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
 .md-content {
   padding: 20px;
 }
