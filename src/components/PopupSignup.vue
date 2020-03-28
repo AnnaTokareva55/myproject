@@ -1,14 +1,21 @@
 <template>
   <div class="popup" ref="popup">
-    <form novalidate class="popup-form" @submit.prevent="login">
+    <form novalidate class="popup-form" @submit.prevent="signup">
       <md-card>
         <md-card-header
           class="d-flex justify-content-between align-items-center"
         >
-          <div class="md-title popup-title">Вход на сайт</div>
+          <div class="md-title popup-title">Регистрация</div>
           <close-icon @click="closePopup" />
         </md-card-header>
         <md-card-content>
+          <md-field :class="getValidationClass('name')">
+            <label for="name">Имя</label>
+            <md-input name="name" id="name" v-model="form.name"></md-input>
+            <span class="md-error" v-if="!$v.form.name.required"
+              >Введите имя.</span
+            >
+          </md-field>
           <md-field :class="getValidationClass('email')">
             <label for="email">Email</label>
             <md-input name="email" id="email" v-model="form.email"></md-input>
@@ -36,7 +43,7 @@
         </md-card-content>
         <md-card-actions>
           <md-button type="submit" class="md-raised md-primary"
-            >Войти</md-button
+            >Зарегистрироваться</md-button
           >
         </md-card-actions>
       </md-card>
@@ -49,13 +56,16 @@ import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "PopupLogin",
+  name: "PopupSignup",
   mixins: [validationMixin],
   data: () => ({
-    form: { email: null, password: null }
+    form: { name: null, email: null, password: null }
   }),
   validations: {
     form: {
+      name: {
+        required
+      },
       email: {
         required,
         email
@@ -83,18 +93,19 @@ export default {
     },
     clearForm() {
       this.$v.$reset();
+      this.form.name = null;
       this.form.email = null;
       this.form.password = null;
     },
     closePopup() {
-      this.$emit("closePopupLogin");
+      this.$emit("closePopupSignup");
     },
-    login() {
+    signup() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
-      console.log("login");
+      console.log("signup");
       this.clearForm();
       this.closePopup();
     }

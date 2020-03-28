@@ -7,23 +7,32 @@
       </div>
       <div class="login">
         <md-button class="md-primary" @click="showPopupLogin">Войти</md-button>
-        <md-button class="md-raised md-primary">Регистрация</md-button>
+        <md-button class="md-raised md-primary" @click="showPopupSignup"
+          >Регистрация</md-button
+        >
       </div>
     </md-toolbar>
-    <PopupLogin v-if="isPopupLoginVisible" @closePopupLogin="closePopupLogin" @login="login" />
+    <PopupLogin v-if="isPopupLoginVisible" @closePopupLogin="closePopupLogin" />
+    <PopupSignup
+      v-if="isPopupSignupVisible"
+      @closePopupSignup="closePopupSignup"
+    />
   </div>
 </template>
 
 <script>
 import PopupLogin from "./PopupLogin.vue";
+import PopupSignup from "./PopupSignup.vue";
 
 export default {
   name: "Header",
   data: () => ({
-    isPopupLoginVisible: false
+    isPopupLoginVisible: false,
+    isPopupSignupVisible: false
   }),
   components: {
-    PopupLogin
+    PopupLogin,
+    PopupSignup
   },
   methods: {
     showPopupLogin() {
@@ -32,8 +41,11 @@ export default {
     closePopupLogin() {
       this.isPopupLoginVisible = false;
     },
-    login() {
-      console.log("login");
+    showPopupSignup() {
+      this.isPopupSignupVisible = true;
+    },
+    closePopupSignup() {
+      this.isPopupSignupVisible = false;
     }
   }
 };
