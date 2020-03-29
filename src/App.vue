@@ -27,12 +27,20 @@ export default {
   display: flex;
 }
 
+.flex-direction-column {
+  flex-direction: column;
+}
+
 .justify-content-between {
   justify-content: space-between;
 }
 
 .align-items-center {
   align-items: center;
+}
+
+.align-items-end {
+  align-items: flex-end;
 }
 
 .md-content {
