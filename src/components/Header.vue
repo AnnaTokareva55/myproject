@@ -5,11 +5,21 @@
         <md-button to="/" :md-ripple="false">Главная</md-button>
         <md-button to="/article" :md-ripple="false">Статья</md-button>
       </div>
-      <div class="login">
-        <md-button class="md-primary" @click="showPopupLogin">Войти</md-button>
-        <md-button class="md-raised md-primary" @click="showPopupSignup"
-          >Регистрация</md-button
-        >
+      <div class="user">
+        <div class="userexit d-flex align-items-center" v-if="isLogin">
+          <span class="username">{{ user.name }}</span>
+          <md-button class="md-raised md-primary" @click="exit"
+            >Выйти</md-button
+          >
+        </div>
+        <div class="loginsignup" v-else>
+          <md-button class="md-primary" @click="showPopupLogin"
+            >Войти</md-button
+          >
+          <md-button class="md-raised md-primary" @click="showPopupSignup"
+            >Регистрация</md-button
+          >
+        </div>
       </div>
     </md-toolbar>
     <PopupLogin v-if="isPopupLoginVisible" @closePopupLogin="closePopupLogin" />
@@ -23,18 +33,24 @@
 <script>
 import PopupLogin from "./PopupLogin.vue";
 import PopupSignup from "./PopupSignup.vue";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Header",
-  data: () => ({
-    isPopupLoginVisible: false,
-    isPopupSignupVisible: false
-  }),
   components: {
     PopupLogin,
     PopupSignup
   },
+  data: () => ({
+    isPopupLoginVisible: false,
+    isPopupSignupVisible: false
+  }),
+  computed: {
+    ...mapGetters("user", ["user", "isLogin"])
+  },
   methods: {
+    ...mapActions("user", ["exit"]),
     showPopupLogin() {
       this.isPopupLoginVisible = true;
     },
@@ -50,3 +66,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.username {
+  padding: 0 15px;
+  font-size: 16px;
+  color: #448aff;
+}
+</style>

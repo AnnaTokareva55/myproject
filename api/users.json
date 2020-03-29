@@ -1,0 +1,12 @@
+{
+  "test@test.ru": {
+    "name": "Анна",
+    "email": "test@test.ru",
+    "password": "qwert123"
+  },
+  "ivan@test.ru": {
+    "name": "Иван",
+    "email": "ivan@test.ru",
+    "password": "12345"
+  }
+}

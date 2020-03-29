@@ -47,6 +47,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   name: "PopupLogin",
@@ -73,6 +74,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("user", ["getUser"]),
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
       if (field) {
@@ -94,7 +96,7 @@ export default {
         this.$v.$touch();
         return;
       }
-      console.log("login");
+      this.getUser([this.form.email, this.form.password]);
       this.clearForm();
       this.closePopup();
     }
