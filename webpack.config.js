@@ -24,9 +24,6 @@ module.exports = {
         include: path.resolve(__dirname, "src"),
         exclude: /node_modules/,
         loader: "babel-loader",
-        options: {
-          presets: ["@babel/env"]
-        }
       },
       {
         test: /\.vue$/,

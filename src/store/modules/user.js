@@ -21,14 +21,19 @@ const usersStore = {
     }
   },
   actions: {
-    getUser({ commit }, [email, password]) {
-      axios
+    /**
+     * Проверка переданных параметров (email и пароль) осуществляется прямо в action,
+     * поскольку отсутствует сервер, где она могла бы происходить.
+     * При наличии сервера, осуществлять проверку там и загружать объект соответствующего user'а.
+     */
+    getUser: async ({ commit }, [email, password]) => {
+      await axios
         .get("/api/users.json")
         .then(response => response.data)
         .then(usersObj => usersObj[email])
         .then(user => {
           if (!user || user.password !== password) {
-            console.log("err");
+            throw new Error("Email или пароль заданы неверно.");
           } else commit("LOAD_USER", user);
         });
     },

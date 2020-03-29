@@ -8,6 +8,9 @@
           <div class="md-title popup-title">Вход на сайт</div>
           <close-icon @click="closePopup" />
         </md-card-header>
+        <md-card-content class="errorlogin" v-if="error">{{
+          error
+        }}</md-card-content>
         <md-card-content>
           <md-field :class="getValidationClass('email')">
             <label for="email">Email</label>
@@ -53,7 +56,8 @@ export default {
   name: "PopupLogin",
   mixins: [validationMixin],
   data: () => ({
-    form: { email: null, password: null }
+    form: { email: null, password: null },
+    error: null
   }),
   validations: {
     form: {
@@ -87,16 +91,22 @@ export default {
       this.$v.$reset();
       this.form.email = null;
       this.form.password = null;
+      this.error = null;
     },
     closePopup() {
       this.$emit("closePopupLogin");
     },
-    login() {
+    async login() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
-      this.getUser([this.form.email, this.form.password]);
+      try {
+        await this.getUser([this.form.email, this.form.password]);
+      } catch (err) {
+        this.error = err.message;
+        return;
+      }
       this.clearForm();
       this.closePopup();
     }
@@ -140,5 +150,9 @@ export default {
   width: 1.7em;
   height: 1.7em;
   bottom: 0;
+}
+
+.errorlogin {
+  color: red;
 }
 </style>
