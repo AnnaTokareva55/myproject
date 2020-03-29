@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const usersStore = {
+const userStore = {
   namespaced: true,
   state: {
     user: {},
@@ -56,4 +56,4 @@ const usersStore = {
   }
 };
 
-export default usersStore;
+export default userStore;
