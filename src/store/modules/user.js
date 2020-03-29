@@ -11,7 +11,7 @@ const usersStore = {
     isLogin: ({ isLogin }) => isLogin
   },
   mutations: {
-    LOAD_USER(state, data) {
+    ENTER_USER(state, data) {
       state.user = data;
       state.isLogin = true;
     },
@@ -34,11 +34,24 @@ const usersStore = {
         .then(user => {
           if (!user || user.password !== password) {
             throw new Error("Email или пароль заданы неверно.");
-          } else commit("LOAD_USER", user);
+          } else commit("ENTER_USER", user);
         });
     },
     exit({ commit }) {
       commit("EXIT_USER");
+    },
+    /**
+     * При наличии сервера отправить к нему post-запрос с объектом нового пользователя.
+     * После получения ответа от сервера об успешном прохождении проверки отправленных данных
+     * и добавлении нового пользоватлея в БД выполнить вход под созданным пользователем.
+     * При получении ответа с данными об ошибке на сервере вернуть ошибку.
+     */
+    addUser: async ({ commit }, user) => {
+      await commit("ENTER_USER", user);
+      //let { data } = await axios.post("/api/users.json", { user });
+      //if (data.result === 1) {
+      //  commit("ENTER_USER", user);
+      //} else throw new Error("Ошибка регистрации.");
     }
   }
 };

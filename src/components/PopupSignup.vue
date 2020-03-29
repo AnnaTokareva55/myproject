@@ -2,49 +2,39 @@
   <div class="popup" ref="popup">
     <form novalidate class="popup-form" @submit.prevent="signup">
       <md-card>
-        <md-card-header
-          class="d-flex justify-content-between align-items-center"
-        >
+        <md-card-header class="d-flex justify-content-between align-items-center">
           <div class="md-title popup-title">Регистрация</div>
           <close-icon @click="closePopup" />
         </md-card-header>
+        <md-card-content class="errorsignup" v-if="error">
+          {{
+          error
+          }}
+        </md-card-content>
         <md-card-content>
           <md-field :class="getValidationClass('name')">
             <label for="name">Имя</label>
             <md-input name="name" id="name" v-model="form.name"></md-input>
-            <span class="md-error" v-if="!$v.form.name.required"
-              >Введите имя.</span
-            >
+            <span class="md-error" v-if="!$v.form.name.required">Введите имя.</span>
           </md-field>
           <md-field :class="getValidationClass('email')">
             <label for="email">Email</label>
             <md-input name="email" id="email" v-model="form.email"></md-input>
-            <span class="md-error" v-if="!$v.form.email.required"
-              >Введите email.</span
-            >
-            <span class="md-error" v-else-if="!$v.form.email.email"
-              >Email введен некорректно.</span
-            >
+            <span class="md-error" v-if="!$v.form.email.required">Введите email.</span>
+            <span class="md-error" v-else-if="!$v.form.email.email">Email введен некорректно.</span>
           </md-field>
           <md-field :class="getValidationClass('password')">
             <label for="password">Пароль</label>
-            <md-input
-              name="password"
-              id="password"
-              v-model="form.password"
-            ></md-input>
-            <span class="md-error" v-if="!$v.form.password.required"
-              >Введите пароль.</span
-            >
-            <span class="md-error" v-else-if="!$v.form.password.minLength"
-              >Пароль должен содержать не менее 5 символов.</span
-            >
+            <md-input name="password" id="password" v-model="form.password"></md-input>
+            <span class="md-error" v-if="!$v.form.password.required">Введите пароль.</span>
+            <span
+              class="md-error"
+              v-else-if="!$v.form.password.minLength"
+            >Пароль должен содержать не менее 5 символов.</span>
           </md-field>
         </md-card-content>
         <md-card-actions>
-          <md-button type="submit" class="md-raised md-primary"
-            >Зарегистрироваться</md-button
-          >
+          <md-button type="submit" class="md-raised md-primary">Зарегистрироваться</md-button>
         </md-card-actions>
       </md-card>
     </form>
@@ -54,12 +44,14 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email, minLength } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   name: "PopupSignup",
   mixins: [validationMixin],
   data: () => ({
-    form: { name: null, email: null, password: null }
+    form: { name: null, email: null, password: null },
+    error: null
   }),
   validations: {
     form: {
@@ -83,6 +75,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("user", ["addUser"]),
     getValidationClass(fieldName) {
       const field = this.$v.form[fieldName];
       if (field) {
@@ -100,12 +93,22 @@ export default {
     closePopup() {
       this.$emit("closePopupSignup");
     },
-    signup() {
+    async signup() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
-      console.log("signup");
+      const newUser = {
+        name: this.form.name,
+        email: this.form.email,
+        password: this.form.password
+      };
+      try {
+        await this.addUser(newUser);
+      } catch (err) {
+        this.error = err.message;
+        return;
+      }
       this.clearForm();
       this.closePopup();
     }
@@ -149,5 +152,9 @@ export default {
   width: 1.7em;
   height: 1.7em;
   bottom: 0;
+}
+
+.errorsignup {
+  color: red;
 }
 </style>
