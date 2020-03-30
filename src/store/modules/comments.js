@@ -23,9 +23,6 @@ const commentsStore = {
         .then(response => response.data)
         .then(allCommentsObj => allCommentsObj[idArticle])
         .then(comments => {
-          //f (!user || user.password !== password) {
-          //  throw new Error("Email или пароль заданы неверно.");
-          //}
           commit("LOAD_COMMENTS", comments);
         });
     },
