@@ -11,6 +11,9 @@ const commentsStore = {
   mutations: {
     LOAD_COMMENTS(state, data) {
       state.comments = data;
+    },
+    ADD_COMMENT(state, data) {
+      state.comments = { ...state.comments, [data.id]: data };
     }
   },
   actions: {
@@ -25,6 +28,19 @@ const commentsStore = {
           //}
           commit("LOAD_COMMENTS", comments);
         });
+    },
+    /**
+     * При наличии сервера отправить к нему post-запрос с объектом нового комментария.
+     * После получения ответа от сервера об успешном добавлении комментария в БД
+     * добавить его объект в хранилище состояний vuex.
+     * При получении ответа с данными об ошибке на сервере вернуть ошибку.
+     */
+    addComment: async ({ commit }, comment) => {
+      await commit("ADD_COMMENT", comment);
+      //let { data } = await axios.post("/api/comments.json", { comment });
+      //if (data.result === 1) {
+      //  commit("ADD_COMMENT", comment);
+      //} else throw new Error("При добавлении комментария произошла ошибка.");
     }
   }
 };

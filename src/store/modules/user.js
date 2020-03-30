@@ -8,6 +8,7 @@ const userStore = {
   },
   getters: {
     user: ({ user }) => user,
+    username: ({ user }) => user.name,
     isLogin: ({ isLogin }) => isLogin
   },
   mutations: {

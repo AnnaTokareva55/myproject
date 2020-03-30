@@ -12,9 +12,10 @@
       <md-card-content>{{item.text}}</md-card-content>
     </md-card>
     <div class="d-flex flex-direction-column align-items-end" v-if="isLogin">
+      <div class="errorcomments" v-if="error">{{error}}</div>
       <md-field v-show="isShowTextfield">
         <label>Ваше сообщение</label>
-        <md-textarea v-model="newComment"></md-textarea>
+        <md-textarea v-model="newCommentText"></md-textarea>
       </md-field>
       <md-button class="md-raised md-primary" @click="addComments">Добавить комментарий</md-button>
     </div>
@@ -29,24 +30,45 @@ export default {
   name: "Comments",
   props: ["idArticle"],
   data: () => ({
-    newComment: null,
-    isShowTextfield: false
+    newCommentText: null,
+    isShowTextfield: false,
+    error: null
   }),
   computed: {
     ...mapGetters("comments", ["comments"]),
-    ...mapGetters("user", ["isLogin"])
+    ...mapGetters("user", ["username", "isLogin"])
   },
   mounted() {
     this.getComments(this.idArticle);
   },
   methods: {
-    ...mapActions("comments", ["getComments"]),
-    addComments() {
+    ...mapActions("comments", ["getComments", "addComment"]),
+    clearForm() {
+      this.newCommentText = null;
+      this.isShowTextfield = null;
+      this.error = null;
+    },
+    async addComments() {
       if (!this.isShowTextfield) {
         this.isShowTextfield = true;
         return;
       } else {
-        console.log("add");
+        let date = new Date();
+        let newComment = {
+          id: Math.random(),
+          date: `${date.getFullYear()}-${date.getMonth() +
+            1}-${date.getDate()}`,
+          time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+          user: this.username,
+          text: this.newCommentText
+        };
+        try {
+          await this.addComment(newComment);
+        } catch (err) {
+          this.error = err.message;
+          return;
+        }
+        this.clearForm();
       }
     }
   }
@@ -70,5 +92,9 @@ export default {
 
 .md-button.md-theme-default {
   margin: 0;
+}
+
+.errorcomments {
+  color: red;
 }
 </style>
