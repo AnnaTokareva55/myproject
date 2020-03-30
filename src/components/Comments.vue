@@ -38,7 +38,7 @@ export default {
     ...mapGetters("comments", ["comments"]),
     ...mapGetters("user", ["username", "isLogin"])
   },
-  mounted() {
+  created() {
     this.getComments(this.idArticle);
   },
   methods: {

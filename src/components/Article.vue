@@ -22,7 +22,7 @@ export default {
   computed: {
     ...mapGetters("article", ["article"])
   },
-  mounted() {
+  created() {
     this.getArticle(this.idArticle);
   },
   methods: {
