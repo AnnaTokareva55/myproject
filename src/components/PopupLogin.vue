@@ -2,45 +2,34 @@
   <div class="popup" ref="popup">
     <form novalidate class="popup-form" @submit.prevent="login">
       <md-card>
-        <md-card-header
-          class="d-flex justify-content-between align-items-center"
-        >
+        <md-card-header class="d-flex justify-content-between align-items-center">
           <div class="md-title popup-title">Вход на сайт</div>
           <close-icon @click="closePopup" />
         </md-card-header>
-        <md-card-content class="errorlogin" v-if="error">{{
+        <md-card-content class="errorlogin" v-if="error">
+          {{
           error
-        }}</md-card-content>
+          }}
+        </md-card-content>
         <md-card-content>
           <md-field :class="getValidationClass('email')">
             <label for="email">Email</label>
             <md-input name="email" id="email" v-model="form.email"></md-input>
-            <span class="md-error" v-if="!$v.form.email.required"
-              >Введите email.</span
-            >
-            <span class="md-error" v-else-if="!$v.form.email.email"
-              >Email введен некорректно.</span
-            >
+            <span class="md-error" v-if="!$v.form.email.required">Введите email.</span>
+            <span class="md-error" v-else-if="!$v.form.email.email">Email введен некорректно.</span>
           </md-field>
           <md-field :class="getValidationClass('password')">
             <label for="password">Пароль</label>
-            <md-input
-              name="password"
-              id="password"
-              v-model="form.password"
-            ></md-input>
-            <span class="md-error" v-if="!$v.form.password.required"
-              >Введите пароль.</span
-            >
-            <span class="md-error" v-else-if="!$v.form.password.minLength"
-              >Пароль должен содержать не менее 5 символов.</span
-            >
+            <md-input name="password" id="password" v-model="form.password"></md-input>
+            <span class="md-error" v-if="!$v.form.password.required">Введите пароль.</span>
+            <span
+              class="md-error"
+              v-else-if="!$v.form.password.minLength"
+            >Пароль должен содержать не менее 5 символов.</span>
           </md-field>
         </md-card-content>
         <md-card-actions>
-          <md-button type="submit" class="md-raised md-primary"
-            >Войти</md-button
-          >
+          <md-button type="submit" class="md-raised md-primary">Войти</md-button>
         </md-card-actions>
       </md-card>
     </form>
@@ -154,5 +143,14 @@ export default {
 
 .errorlogin {
   color: red;
+}
+
+@media screen and (max-width: 650px) {
+  .popup-form {
+    position: fixed;
+    top: 150px;
+    left: calc(50% - 150px);
+    width: 300px;
+  }
 }
 </style>

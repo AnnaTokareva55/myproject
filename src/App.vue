@@ -46,4 +46,10 @@ export default {
 .md-content {
   padding: 20px;
 }
+
+@media screen and (max-width: 650px) {
+  h1 {
+    font-size: 22px;
+  }
+}
 </style>

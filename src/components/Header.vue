@@ -8,25 +8,16 @@
       <div class="user">
         <div class="userexit d-flex align-items-center" v-if="isLogin">
           <span class="username">{{ user.name }}</span>
-          <md-button class="md-raised md-primary" @click="exit"
-            >Выйти</md-button
-          >
+          <md-button class="md-raised md-primary" @click="exit">Выйти</md-button>
         </div>
         <div class="loginsignup" v-else>
-          <md-button class="md-primary" @click="showPopupLogin"
-            >Войти</md-button
-          >
-          <md-button class="md-raised md-primary" @click="showPopupSignup"
-            >Регистрация</md-button
-          >
+          <md-button class="md-primary" @click="showPopupLogin">Войти</md-button>
+          <md-button class="md-raised md-primary" @click="showPopupSignup">Регистрация</md-button>
         </div>
       </div>
     </md-toolbar>
     <PopupLogin v-if="isPopupLoginVisible" @closePopupLogin="closePopupLogin" />
-    <PopupSignup
-      v-if="isPopupSignupVisible"
-      @closePopupSignup="closePopupSignup"
-    />
+    <PopupSignup v-if="isPopupSignupVisible" @closePopupSignup="closePopupSignup" />
   </div>
 </template>
 
@@ -72,5 +63,13 @@ export default {
   padding: 0 15px;
   font-size: 16px;
   color: #448aff;
+}
+
+@media screen and (max-width: 650px) {
+  .md-button {
+    min-width: 0;
+    margin: 6px 1px;
+    font-size: 12px;
+  }
 }
 </style>

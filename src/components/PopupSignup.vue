@@ -157,4 +157,13 @@ export default {
 .errorsignup {
   color: red;
 }
+
+@media screen and (max-width: 650px) {
+  .popup-form {
+    position: fixed;
+    top: 150px;
+    left: calc(50% - 150px);
+    width: 300px;
+  }
+}
 </style>

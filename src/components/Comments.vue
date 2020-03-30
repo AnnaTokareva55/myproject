@@ -97,4 +97,10 @@ export default {
 .errorcomments {
   color: red;
 }
+
+@media screen and (max-width: 650px) {
+  .md-button {
+    font-size: 12px;
+  }
+} 
 </style>
