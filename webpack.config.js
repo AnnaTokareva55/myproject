@@ -11,28 +11,40 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "app.js"
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "src", "index.html")
-    }),
-    new VueLoaderPlugin()
-  ],
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js)$/,
         include: path.resolve(__dirname, "src"),
-        exclude: /node_modules/,
         loader: "babel-loader",
+        options: {
+          presets: ["@babel/env"],
+          plugins: ["@babel/transform-runtime"]
+        }
       },
       {
         test: /\.vue$/,
-        loader: "vue-loader"
+        loader: "vue-loader",
+        options: {
+          loaders: {
+            js: "babel-loader",
+            options: {
+              presets: ["@babel/env"],
+              plugins: ["@babel/transform-runtime"]
+            }
+          }
+        }
       },
       {
         test: /\.css$/,
         use: ["vue-style-loader", "css-loader"]
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src", "index.html")
+    }),
+    new VueLoaderPlugin()
+  ]
 };
